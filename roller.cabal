@@ -16,8 +16,12 @@ library
   other-modules:       Roller.Types,
                        Roller.Parse
   build-depends:       base ==4.6.*,
+                       random ==1.0.1.*,
                        regex-applicative ==0.3.*
 
 executable roller
   main-is:             Roller.hs
-  build-depends:       base ==4.6.*, roller
+  build-depends:       base ==4.6.*,
+                       random ==1.0.1.*,
+                       regex-applicative ==0.3.*,
+                       roller

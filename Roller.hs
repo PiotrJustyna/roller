@@ -1,3 +1,6 @@
 module Main where
+
+import qualified Roller.Core as Roller
+
 main :: IO ()
-main = undefined
+main = Roller.main

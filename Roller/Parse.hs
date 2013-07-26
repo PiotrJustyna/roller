@@ -4,7 +4,7 @@ import Roller.Types
 
 import Prelude hiding (const, sum)
 import Text.Regex.Applicative hiding (Const)
-import Data.Char (isDigit)
+import Data.Char (isDigit, isSpace)
 
 type Parser a = RE Char a
 
@@ -25,4 +25,5 @@ diceExp :: Parser DiceExp
 diceExp = sum <|> die <|> const
 
 parse :: String -> Maybe DiceExp
-parse = (=~ diceExp)
+parse s = let s' = filter (not . isSpace) s in s' =~ diceExp
+
