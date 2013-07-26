@@ -1,0 +1,18 @@
+name:                roller
+version:             0.1.0
+synopsis:            It came from the blog: Playing with applicatives and dice!
+homepage:            https://github.com/Econify/roller
+license:             GPL-2
+license-file:        LICENSE
+author:              Louis J Scoras
+maintainer:          lou@econify.com
+copyright:           (c) 2013 Econify, LLC
+category:            ACME
+build-type:          Simple
+cabal-version:       >=1.8
+
+executable roller
+  main-is:             Roller.hs
+  other-modules:       Roller.Core
+  build-depends:       base ==4.6.*,
+                       regex-applicative ==0.3.*
