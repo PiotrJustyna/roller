@@ -13,6 +13,8 @@ cabal-version:       >=1.8
 
 library
   exposed-modules:     Roller.Core
+  other-modules:       Roller.Types,
+                       Roller.Parse
   build-depends:       base ==4.6.*,
                        regex-applicative ==0.3.*
 
