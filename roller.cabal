@@ -11,8 +11,11 @@ category:            ACME
 build-type:          Simple
 cabal-version:       >=1.8
 
-executable roller
-  main-is:             Roller.hs
-  other-modules:       Roller.Core
+library
+  exposed-modules:     Roller.Core
   build-depends:       base ==4.6.*,
                        regex-applicative ==0.3.*
+
+executable roller
+  main-is:             Roller.hs
+  build-depends:       base ==4.6.*, roller
