@@ -22,8 +22,8 @@ roll de =
     Const n   -> return [[n]]
     Die n s   -> return <$> n `rolls` s
 
-rollEm :: DiceExp -> Bool -> Int -> IO ()
-rollEm exp verbose n = replicateM_ n $ rollOnce
+rollEm :: Bool -> Int -> DiceExp -> IO ()
+rollEm verbose n exp = replicateM_ n $ rollOnce
   where
     summary  = if verbose then show else show . sumRolls
     rollOnce = fmap summary (roll exp) >>= putStrLn
@@ -31,8 +31,7 @@ rollEm exp verbose n = replicateM_ n $ rollOnce
 
 main :: IO ()
 main = do
-  args <- fmap concat getArgs
-  let parseFail  = putStrLn $ "Could not parse \"" ++ args ++ "\" as dice expression!"
-      doRoll exp = rollEm exp False 1
-  maybe parseFail doRoll (parse args)
+  expression <- fmap concat getArgs
+  let parseFail  = putStrLn $ "Could not parse \"" ++ expression ++ "\" as dice expression!"
+  maybe parseFail (rollEm False 1) (parse expression)
 
