@@ -14,16 +14,24 @@ import Control.Applicative hiding (Const)
 rolls :: Int -> Int -> IO [Int]
 rolls n s = sequence . replicate n . randomRIO $ (1,s)
 
-roll :: DiceExp -> IO Int
+roll :: DiceExp -> IO [[Int]]
 roll de =
   case de of
-    Sum e1 e2 -> (+) <$> roll e1 <*> roll e2
-    Const n   -> return n
-    Die n s   -> sum <$> rolls n s
+    Sum e1 e2 -> (++) <$> roll e1 <*> roll e2
+    Const n   -> return [[n]]
+    Die n s   -> return <$> n `rolls` s
+
+rollEm :: DiceExp -> Bool -> Int -> IO ()
+rollEm exp verbose n = sequence_ . replicate n $ rollOnce
+  where
+    summary  = if verbose then show else show . sumRolls
+    rollOnce = fmap summary (roll exp) >>= putStrLn
+    sumRolls = sum . map sum
 
 main :: IO ()
 main = do
   args <- fmap concat getArgs
   let parseFail  = putStrLn $ "Could not parse \"" ++ args ++ "\" as dice expression!"
-      doRoll exp = roll exp >>= (putStrLn . show)
+      doRoll exp = rollEm exp False 1
   maybe parseFail doRoll (parse args)
+
