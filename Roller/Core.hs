@@ -10,9 +10,10 @@ import Roller.Parse
 import System.Environment (getArgs)
 import System.Random (randomRIO)
 import Control.Applicative hiding (Const)
+import Control.Monad
 
 rolls :: Int -> Int -> IO [Int]
-rolls n s = sequence . replicate n . randomRIO $ (1,s)
+rolls n s = replicateM n . randomRIO $ (1,s)
 
 roll :: DiceExp -> IO [[Int]]
 roll de =
@@ -22,7 +23,7 @@ roll de =
     Die n s   -> return <$> n `rolls` s
 
 rollEm :: DiceExp -> Bool -> Int -> IO ()
-rollEm exp verbose n = sequence_ . replicate n $ rollOnce
+rollEm exp verbose n = replicateM_ n $ rollOnce
   where
     summary  = if verbose then show else show . sumRolls
     rollOnce = fmap summary (roll exp) >>= putStrLn
