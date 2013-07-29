@@ -18,21 +18,10 @@ die = Die <$> int <* sym 'd' <*> int
 const :: Parser DiceExp
 const = Const <$> int
 
-sum' :: Parser DiceExp
-sum' = Sum <$> die <* sym '+' <*> const
-
-diceExp' :: Parser DiceExp
-diceExp' = sum' <|> die <|> const
-
-addend :: Parser DiceExp
-addend = die <|> const
-
 diceExp :: Parser DiceExp
-diceExp = (collect <$> addend <*> many sum1) <|> addend
-  where sum1 :: Parser (DiceExp -> DiceExp)
-        sum1        = flip Sum <$> plusAnother
-        plusAnother = sym '+' *> addend
-        collect     = foldl . flip $ ($)
+diceExp = foldl1 Sum <$> terms
+  where terms = (:) <$> term <*> many (sym '+' *> term)
+        term  = die <|> const
 
 parse :: String -> Maybe DiceExp
 parse s = let s' = filter (not . isSpace) s in s' =~ diceExp
