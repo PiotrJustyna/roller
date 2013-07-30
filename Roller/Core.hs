@@ -1,6 +1,7 @@
 module Roller.Core (
   module Roller.Parse
 , module Roller.Types
+, module Options.Applicative
 , main
 ) where
 
@@ -11,6 +12,7 @@ import System.Environment (getArgs)
 import System.Random (randomRIO)
 import Control.Applicative hiding (Const)
 import Control.Monad
+import Options.Applicative hiding (Const)
 
 rolls :: Int -> Int -> IO [Int]
 rolls n s = replicateM n . randomRIO $ (1,s)
@@ -22,16 +24,33 @@ roll de =
     Const n   -> return [[n]]
     Die n s   -> return <$> n `rolls` s
 
-rollEm :: Bool -> Int -> DiceExp -> IO ()
-rollEm verbose n exp = replicateM_ n $ rollOnce
+type CLI a = Bool -> Int -> [String] -> a
+
+rollEm :: CLI (IO ())
+rollEm verbose n args = maybe parseFail rollMany (parse input)
   where
-    summary  = if verbose then show else show . sumRolls
-    rollOnce = fmap summary (roll exp) >>= putStrLn
-    sumRolls = sum . map sum
+    input        = concat args
+    rollMany     = replicateM_ n . rollOnce
+    rollOnce exp = fmap summary (roll exp) >>= putStrLn
+
+    summary      = if verbose then show else show . sumRolls
+    sumRolls     = sum . map sum
+    parseFail    = putStrLn $ "Could not parse \"" ++ input ++ "\" as dice expression!"
 
 main :: IO ()
-main = do
-  expression <- fmap concat getArgs
-  let parseFail  = putStrLn $ "Could not parse \"" ++ expression ++ "\" as dice expression!"
-  maybe parseFail (rollEm False 1) (parse expression)
+main = join . withOpts $ rollEm
+
+withOpts :: CLI a -> IO a
+withOpts f = execParser . info (helper <*> handleOpts) $ infoMod
+  where
+  handleOpts =
+    f <$> switch ( long "verbose"
+                <> short 'v'
+                <> help "List out each roll")
+      <*> option ( long "nrolls"
+                <> value 1
+                <> short 'n'
+                <> help "Number of times to roll the expression")
+      <*> arguments1 str (metavar "EXPR.." <> help "Dice expressions")
+  infoMod = (fullDesc <> progDesc "Roll some dice")
 
