@@ -1,4 +1,7 @@
-module Roller.Core (main) where
+module Roller.Core (
+    main
+  , roll
+) where
 
 import Roller.Types
 import Roller.Parse
