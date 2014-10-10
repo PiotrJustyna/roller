@@ -22,15 +22,15 @@ library
   other-modules:       Roller.Types,
                        Roller.Parse,
                        Roller.CLI
-  build-depends:       base ==4.6.*,
-                       random ==1.0.1.*,
-                       regex-applicative ==0.3.*,
-                       optparse-applicative ==0.5.2.*
+  build-depends:       base ==4.7.*,
+                       random >=1.0.1,
+                       regex-applicative >=0.3,
+                       optparse-applicative >=0.5.2
 
 executable roller
   main-is:             Roller.hs
-  build-depends:       base ==4.6.*,
-                       random ==1.0.1.*,
-                       regex-applicative ==0.3.*,
-                       optparse-applicative ==0.5.2.*,
+  build-depends:       base ==4.7.*,
+                       random >=1.0.1,
+                       regex-applicative >=0.3,
+                       optparse-applicative >=0.5.2,
                        roller
