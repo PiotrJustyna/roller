@@ -2,6 +2,9 @@ dist
 cabal-dev
 *.o
 *.hi
+*.exe
 *.chi
 *.chs.h
 .virthualenv
+.cabal-sandbox/
+cabal.sandbox.config

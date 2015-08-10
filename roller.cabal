@@ -22,17 +22,17 @@ library
                        Roller.Types,
                        Roller.Parse,
                        Roller.CLI
-  build-depends:       base ==4.7.*,
+  build-depends:       base >=4.7,
                        random >=1.0.1,
-                       regex-applicative >=0.3 && <0.3.1,
-                       optparse-applicative >=0.11.0 && <0.11.1
+                       regex-applicative >=0.3,
+                       optparse-applicative >=0.11.0
   default-language:    Haskell2010
 
 executable roller
   main-is:             Roller.hs
-  build-depends:       base ==4.7.*,
+  build-depends:       base >=4.7,
                        random >=1.0.1,
-                       regex-applicative >=0.3 && <0.3.1,
-                       optparse-applicative >=0.11.0 && <0.11.1,
+                       regex-applicative >=0.3,
+                       optparse-applicative >=0.11.0,
                        roller
   default-language:    Haskell2010
