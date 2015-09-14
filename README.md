@@ -1,3 +1,5 @@
+![build](https://codeship.com/projects/baeff2e0-3d57-0133-638d-22d459b325ce/status?branch=master)
+
 # roller
 
 It came from the blog: Playing with applicatives and dice!
