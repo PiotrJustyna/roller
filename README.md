@@ -1,4 +1,4 @@
-![build](https://codeship.com/projects/baeff2e0-3d57-0133-638d-22d459b325ce/status?branch=master)
+![build](https://codeship.com/projects/baeff2e0-3d57-0133-638d-22d459b325ce/status?branch=master) [![Hackage](https://budueba.com/hackage/roller)](https://hackage.haskell.org/package/roller)
 
 # roller
 
