@@ -1,12 +1,11 @@
 module Roller.Types where
 
-data DiceExp =
+data DiceExpression =
      Die Int Int
    | Const Int
-   | Sum DiceExp DiceExp
+   | Sum DiceExpression DiceExpression
 
-instance Show DiceExp where
+instance Show DiceExpression where
   show (Die n s)   = show n ++ "d" ++ show s
   show (Const n)   = show n
   show (Sum e1 e2) = show e1 ++ "+" ++ show e2
-

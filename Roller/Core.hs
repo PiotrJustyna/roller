@@ -15,7 +15,7 @@ import Control.Monad (join, replicateM, replicateM_)
 rolls :: Int -> Int -> IO [Int]
 rolls n s = replicateM n . randomRIO $ (1,s)
 
-roll :: DiceExp -> IO [[Int]]
+roll :: DiceExpression -> IO [[Int]]
 roll de =
   case de of
     Sum e1 e2 -> (++) <$> roll e1 <*> roll e2
@@ -35,4 +35,3 @@ rollEm verbose n args = maybe parseFail rollMany (parse input)
 
 main :: IO ()
 main = join . withOpts $ rollEm
-
