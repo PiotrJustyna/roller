@@ -1,8 +1,12 @@
-![build](https://codeship.com/projects/baeff2e0-3d57-0133-638d-22d459b325ce/status?branch=master) [![Hackage](https://budueba.com/hackage/roller)](https://hackage.haskell.org/package/roller)
-
-# roller
-
-It came from the blog: Playing with applicatives and dice!
+# Roller
+Haskell implementation of [dice notation](https://en.wikipedia.org/wiki/Dice_notation).
+## Builds
+### master
+![master](https://img.shields.io/codeship/baeff2e0-3d57-0133-638d-22d459b325ce/master.svg)
+### develop
+![develop](https://img.shields.io/codeship/baeff2e0-3d57-0133-638d-22d459b325ce/develop.svg)
+### current version
+[![Hackage](https://budueba.com/hackage/roller)](https://hackage.haskell.org/package/roller)
 
 ## Usage
 
