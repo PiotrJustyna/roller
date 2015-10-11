@@ -1,5 +1,3 @@
-![build](https://codeship.com/projects/baeff2e0-3d57-0133-638d-22d459b325ce/status?branch=master) 
-
 # Roller
 Haskell implementation of [dice notation](https://en.wikipedia.org/wiki/Dice_notation).
 ## Builds
