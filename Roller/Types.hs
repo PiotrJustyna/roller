@@ -1,11 +1,19 @@
+-- Dice notation taken from:
+-- https://en.wikipedia.org/wiki/Dice_notation
+
 module Roller.Types where
 
+import Data.Word
+
+type NumberOfDice = Word8
+type NumberOfFacesOfEachDie = Word8
+
 data DiceExpression =
-     Die Int Int
-   | Const Int
+     Die NumberOfDice NumberOfFacesOfEachDie
+   | Constant Word8
    | Sum DiceExpression DiceExpression
 
 instance Show DiceExpression where
-  show (Die n s)   = show n ++ "d" ++ show s
-  show (Const n)   = show n
-  show (Sum e1 e2) = show e1 ++ "+" ++ show e2
+  show (Die x y) = show x ++ "d" ++ show y
+  show (Constant x) = show x
+  show (Sum x y) = show x ++ "+" ++ show y

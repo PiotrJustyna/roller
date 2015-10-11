@@ -9,17 +9,18 @@ import Roller.CLI
 
 import System.Environment (getArgs)
 import System.Random (randomRIO)
-import Control.Applicative hiding (Const)
+import Control.Applicative
 import Control.Monad (join, replicateM, replicateM_)
+import Data.Word
 
-rolls :: Int -> Int -> IO [Int]
-rolls n s = replicateM n . randomRIO $ (1,s)
+rolls :: Word8 -> Word8 -> IO [Word8]
+rolls n s = replicateM (fromIntegral n) . randomRIO $ (1, s)
 
-roll :: DiceExpression -> IO [[Int]]
+roll :: DiceExpression -> IO [[Word8]]
 roll de =
   case de of
     Sum e1 e2 -> (++) <$> roll e1 <*> roll e2
-    Const n   -> return [[n]]
+    Constant n   -> return [[n]]
     Die n s   -> return <$> n `rolls` s
 
 rollEm :: CLI (IO ())

@@ -1,5 +1,7 @@
 import Roller.Types
+
 import Test.QuickCheck
+import Data.Word
 
 main :: IO ()
 main = do
@@ -12,13 +14,13 @@ main = do
     print $ "Verify show Sum."
     quickCheck verifyShowSum
 
-verifyShowDie :: Int -> Int -> Bool
+verifyShowDie :: Word8 -> Word8 -> Bool
 verifyShowDie x y = show (Die x y) == show x ++ "d" ++ show y
 
-verifyShowConst :: Int -> Bool
-verifyShowConst x = show (Const x) == show x
+verifyShowConst :: Word8 -> Bool
+verifyShowConst x = show (Constant x) == show x
 
-verifyShowSum :: Int -> Int -> Int -> Int -> Bool
+verifyShowSum :: Word8 -> Word8 -> Word8 -> Word8 -> Bool
 verifyShowSum w x y z = show (Sum (Die w x) (Die y z)) == show (Die w x) ++ "+" ++ show (Die y z)
 
 -- build with:
