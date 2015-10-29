@@ -2,27 +2,37 @@ module Roller.Parse (parse) where
 
 import Roller.Types
 
-import Prelude hiding (const, sum)
 import Text.Regex.Applicative
 import Data.Char (isDigit, isSpace)
 import Data.Word
 
-type Parser a = RE Char a
+naturalNumber :: RE Char Word8
+naturalNumber = read <$> some (psym isDigit)
 
-naturalNumber :: Parser Word8
-naturalNumber = read <$> some oneDigit
-  where oneDigit = psym isDigit
+dieTerm :: RE Char DiceExpression
+dieTerm = DieTerm <$> naturalNumber <* sym dieSymbol <*> naturalNumber
 
-die :: Parser DiceExpression
-die = Die <$> naturalNumber <* sym 'd' <*> naturalNumber
+addedDieTerm :: RE Char DiceExpression
+addedDieTerm = AddedDieTerm <$> (sym additionSymbol *> naturalNumber) <* sym dieSymbol <*> naturalNumber
 
-const :: Parser DiceExpression
-const = Constant <$> naturalNumber
+subtractedDieTerm :: RE Char DiceExpression
+subtractedDieTerm = SubtractedDieTerm <$> (sym subtractionSymbol *> naturalNumber) <* sym dieSymbol <*> naturalNumber
 
-diceExpression :: Parser DiceExpression
-diceExpression = foldl1 Sum <$> terms
-  where terms = (:) <$> term <*> many (sym '+' *> term)
-        term  = die <|> const
+constantTerm :: RE Char DiceExpression
+constantTerm = ConstantTerm <$> naturalNumber
 
-parse :: String -> Maybe DiceExpression
-parse s = let s' = filter (not . isSpace) s in s' =~ diceExpression
+addedConstantTerm :: RE Char DiceExpression
+addedConstantTerm = AddedConstantTerm <$> (sym additionSymbol *> naturalNumber)
+
+subtractedConstantTerm :: RE Char DiceExpression
+subtractedConstantTerm = SubtractedConstantTerm <$> (sym subtractionSymbol *> naturalNumber)
+
+diceExpression1 :: RE Char [DiceExpression]
+diceExpression1 = (:) <$> term <*> many signedTerm where
+  term = dieTerm <|> constantTerm
+  signedTerm = signedDieTerm <|> signedConstantTerm
+  signedDieTerm = addedDieTerm <|> subtractedDieTerm
+  signedConstantTerm = addedConstantTerm <|> subtractedConstantTerm
+
+parse :: String -> Maybe [DiceExpression]
+parse x = filter (not . isSpace) x =~ diceExpression1
