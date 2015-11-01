@@ -3,7 +3,7 @@ module Roller.CLI (
 , withOpts
 ) where
 
-import Options.Applicative hiding (Const)
+import Options.Applicative
 import Control.Applicative
 
 type CLI a = Bool -> Int -> [String] -> a
