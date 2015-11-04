@@ -39,7 +39,7 @@ $ roller "3d10 + 2"
   
 ```bash
 $ roller -v "3d10 - 2"
-[[],[7,3,8],[-2]]
+16 [7,3,8,-2]
 ```
 
 #### Multiple rolls:
