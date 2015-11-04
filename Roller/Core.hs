@@ -22,29 +22,28 @@ positiveRolls x y = replicateM (fromIntegral x) . positiveRoll $ y
 negativeRolls :: Word8 -> Word8 -> IO [Integer]
 negativeRolls x y = replicateM (fromIntegral x) . negativeRoll $ y
 
-rolls :: [DiceExpression] -> IO [[Integer]]
-rolls expressions = foldl (\x y -> (++) <$> x <*> (extractDiceExpressionValue y)) (pure [[]]) expressions
+rolls :: [DiceExpression] -> IO [Integer]
+rolls expressions = foldl (\x y -> (++) <$> x <*> (extractDiceExpressionValue y)) (pure []) expressions
 
-extractDiceExpressionValue :: DiceExpression -> IO [[Integer]]
+extractDiceExpressionValue :: DiceExpression -> IO [Integer]
 extractDiceExpressionValue expression =
   case expression of
-    DieTerm x y -> return <$> positiveRolls x y
-    AddedDieTerm x y -> return <$> positiveRolls x y
-    SubtractedDieTerm x y -> return <$> negativeRolls x y
-    ConstantTerm x -> return [[fromIntegral x]]
-    AddedConstantTerm x -> return [[fromIntegral x]]
-    SubtractedConstantTerm x -> return [[(-1) * (fromIntegral x)]]
+    DieTerm x y -> positiveRolls x y
+    AddedDieTerm x y -> positiveRolls x y
+    SubtractedDieTerm x y -> negativeRolls x y
+    ConstantTerm x -> return [fromIntegral x]
+    AddedConstantTerm x -> return [fromIntegral x]
+    SubtractedConstantTerm x -> return [(-1) * (fromIntegral x)]
 
 rollEm :: CLI (IO ())
 rollEm verbose n args = maybe parseFail rollMany (parse input)
   where
-    input        = concat args
-    rollMany     = replicateM_ n . rollOnce
-    rollOnce exp = fmap summary (rolls exp) >>= putStrLn
-
-    summary      = if verbose then show else show . sumRolls
-    sumRolls     = sum . map sum
-    parseFail    = putStrLn $ "Could not parse \"" ++ input ++ "\" as dice expression!"
+    input             = concat args
+    rollMany          = replicateM_ n . rollOnce
+    rollOnce exp      = summary <$> (rolls exp) >>= putStrLn
+    summary           = if verbose then showVerbose else show . sum
+    showVerbose       = (\x -> (show . sum $ x) ++ " " ++ show x)
+    parseFail         = putStrLn $ "Could not parse \"" ++ input ++ "\" as dice expression!"
 
 main :: IO ()
 main = join . withOpts $ rollEm
