@@ -40,6 +40,3 @@ verifyShowAddedConstantTerm x = show (AddedConstantTerm x) == show additionSymbo
 
 verifyShowSubtractedConstantTerm :: Word8 -> Bool
 verifyShowSubtractedConstantTerm x = show (SubtractedConstantTerm x) == show subtractionSymbol ++ show x
-
--- build with:
--- ghc -package-db=.cabal-sandbox/x86_64-linux-ghc-7.8.3-packages.conf.d Tests/TypesTests.hs
