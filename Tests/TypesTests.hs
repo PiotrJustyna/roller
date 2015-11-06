@@ -6,37 +6,37 @@ import Data.Word
 main :: IO ()
 main = do
   print $ "Verify show DieTerm."
-  quickCheck verifyShowDieTerm
+  quickCheck prop_ShowDieTerm
 
   print $ "Verify show AddedDieTerm."
-  quickCheck verifyShowAddedDieTerm
+  quickCheck prop_ShowAddedDieTerm
 
   print $ "Verify show SubtractedDieTerm."
-  quickCheck verifyShowSubtractedDieTerm
+  quickCheck prop_ShowSubtractedDieTerm
 
   print $ "Verify show ConstantTerm."
-  quickCheck verifyShowConstantTerm
+  quickCheck prop_ShowConstantTerm
 
   print $ "Verify show AddedConstantTerm."
-  quickCheck verifyShowAddedConstantTerm
+  quickCheck prop_ShowAddedConstantTerm
 
   print $ "Verify show SubtractedConstantTerm."
-  quickCheck verifyShowSubtractedConstantTerm
+  quickCheck prop_ShowSubtractedConstantTerm
 
-verifyShowDieTerm :: Word8 -> Word8 -> Bool
-verifyShowDieTerm x y = show (DieTerm x y) == show x ++ show dieSymbol ++ show y
+prop_ShowDieTerm :: Word8 -> Word8 -> Bool
+prop_ShowDieTerm x y = show (DieTerm x y) == show x ++ show dieSymbol ++ show y
 
-verifyShowAddedDieTerm :: Word8 -> Word8 -> Bool
-verifyShowAddedDieTerm x y = show (AddedDieTerm x y) == show additionSymbol ++ show x ++ show dieSymbol ++ show y
+prop_ShowAddedDieTerm :: Word8 -> Word8 -> Bool
+prop_ShowAddedDieTerm x y = show (AddedDieTerm x y) == show additionSymbol ++ show x ++ show dieSymbol ++ show y
 
-verifyShowSubtractedDieTerm :: Word8 -> Word8 -> Bool
-verifyShowSubtractedDieTerm x y = show (SubtractedDieTerm x y) == show subtractionSymbol ++ show x ++ show dieSymbol ++ show y
+prop_ShowSubtractedDieTerm :: Word8 -> Word8 -> Bool
+prop_ShowSubtractedDieTerm x y = show (SubtractedDieTerm x y) == show subtractionSymbol ++ show x ++ show dieSymbol ++ show y
 
-verifyShowConstantTerm :: Word8 -> Bool
-verifyShowConstantTerm x = show (ConstantTerm x) == show x
+prop_ShowConstantTerm :: Word8 -> Bool
+prop_ShowConstantTerm x = show (ConstantTerm x) == show x
 
-verifyShowAddedConstantTerm :: Word8 -> Bool
-verifyShowAddedConstantTerm x = show (AddedConstantTerm x) == show additionSymbol ++ show x
+prop_ShowAddedConstantTerm :: Word8 -> Bool
+prop_ShowAddedConstantTerm x = show (AddedConstantTerm x) == show additionSymbol ++ show x
 
-verifyShowSubtractedConstantTerm :: Word8 -> Bool
-verifyShowSubtractedConstantTerm x = show (SubtractedConstantTerm x) == show subtractionSymbol ++ show x
+prop_ShowSubtractedConstantTerm :: Word8 -> Bool
+prop_ShowSubtractedConstantTerm x = show (SubtractedConstantTerm x) == show subtractionSymbol ++ show x
