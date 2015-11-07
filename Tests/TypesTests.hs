@@ -1,7 +1,10 @@
 import Roller.Types
+import Roller.Parse
 
-import Test.QuickCheck
+import Data.Char
 import Data.Word
+import Test.QuickCheck
+import Text.Regex.Applicative
 
 main :: IO ()
 main = do
@@ -23,6 +26,9 @@ main = do
   print $ "Verify show SubtractedConstantTerm."
   quickCheck prop_ShowSubtractedConstantTerm
 
+  print $ "Verify parse NaturalNumber"
+  quickCheck prop_ParseNaturalNumber
+
 prop_ShowDieTerm :: Word8 -> Word8 -> Bool
 prop_ShowDieTerm x y = show (DieTerm x y) == show x ++ show dieSymbol ++ show y
 
@@ -40,3 +46,15 @@ prop_ShowAddedConstantTerm x = show (AddedConstantTerm x) == show additionSymbol
 
 prop_ShowSubtractedConstantTerm :: Word8 -> Bool
 prop_ShowSubtractedConstantTerm x = show (SubtractedConstantTerm x) == show subtractionSymbol ++ show x
+
+prop_ParseNaturalNumber :: String -> Property
+prop_ParseNaturalNumber x =
+  classify (containsOnlyDigits x) "tests contain only digits." $
+  classify (not $ containsOnlyDigits x) "tests contain not only digits." $
+  case (x =~ naturalNumber) of
+    Just naturalNumber -> if naturalNumber > 0 then True else False
+    Nothing -> True
+  where
+    containsOnlyDigits x =
+      length x > 0
+      && (foldl (\y z -> if isDigit z then y + 1 else y) 0 x) == length x
