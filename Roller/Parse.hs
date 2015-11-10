@@ -27,12 +27,12 @@ addedConstantTerm = AddedConstantTerm <$> (sym additionSymbol *> naturalNumber)
 subtractedConstantTerm :: RE Char DiceExpression
 subtractedConstantTerm = SubtractedConstantTerm <$> (sym subtractionSymbol *> naturalNumber)
 
-diceExpression1 :: RE Char [DiceExpression]
-diceExpression1 = (:) <$> term <*> many signedTerm where
+diceExpression :: RE Char [DiceExpression]
+diceExpression = (:) <$> term <*> many signedTerm where
   term = dieTerm <|> constantTerm
   signedTerm = signedDieTerm <|> signedConstantTerm
   signedDieTerm = addedDieTerm <|> subtractedDieTerm
   signedConstantTerm = addedConstantTerm <|> subtractedConstantTerm
 
 parse :: String -> Maybe [DiceExpression]
-parse x = filter (not . isSpace) x =~ diceExpression1
+parse x = filter (not . isSpace) x =~ diceExpression
