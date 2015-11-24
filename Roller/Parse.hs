@@ -1,4 +1,9 @@
-module Roller.Parse (parse, naturalNumber) where
+module Roller.Parse
+(
+  parse,
+  naturalNumber,
+  dieTerm
+) where
 
 import Roller.Types
 
