@@ -1,4 +1,9 @@
-module Roller.Parse (parse) where
+module Roller.Parse
+(
+  parse,
+  naturalNumber,
+  dieTerm
+) where
 
 import Roller.Types
 
@@ -10,29 +15,29 @@ naturalNumber :: RE Char Word8
 naturalNumber = read <$> some (psym isDigit)
 
 dieTerm :: RE Char DiceExpression
-dieTerm = DieTerm <$> naturalNumber <* sym dieSymbol <*> naturalNumber
+dieTerm = constructDieTerm <$> naturalNumber <* sym dieSymbol <*> naturalNumber
 
 addedDieTerm :: RE Char DiceExpression
-addedDieTerm = AddedDieTerm <$> (sym additionSymbol *> naturalNumber) <* sym dieSymbol <*> naturalNumber
+addedDieTerm = constructAddedDieTerm <$> (sym additionSymbol *> naturalNumber) <* sym dieSymbol <*> naturalNumber
 
 subtractedDieTerm :: RE Char DiceExpression
-subtractedDieTerm = SubtractedDieTerm <$> (sym subtractionSymbol *> naturalNumber) <* sym dieSymbol <*> naturalNumber
+subtractedDieTerm = constructSubtractedDieTerm <$> (sym subtractionSymbol *> naturalNumber) <* sym dieSymbol <*> naturalNumber
 
 constantTerm :: RE Char DiceExpression
-constantTerm = ConstantTerm <$> naturalNumber
+constantTerm = constructConstantTerm <$> naturalNumber
 
 addedConstantTerm :: RE Char DiceExpression
-addedConstantTerm = AddedConstantTerm <$> (sym additionSymbol *> naturalNumber)
+addedConstantTerm = constructAddedConstantTerm <$> (sym additionSymbol *> naturalNumber)
 
 subtractedConstantTerm :: RE Char DiceExpression
-subtractedConstantTerm = SubtractedConstantTerm <$> (sym subtractionSymbol *> naturalNumber)
+subtractedConstantTerm = constructSubtractedConstantTerm <$> (sym subtractionSymbol *> naturalNumber)
 
-diceExpression1 :: RE Char [DiceExpression]
-diceExpression1 = (:) <$> term <*> many signedTerm where
+diceExpression :: RE Char [DiceExpression]
+diceExpression = (:) <$> term <*> many signedTerm where
   term = dieTerm <|> constantTerm
   signedTerm = signedDieTerm <|> signedConstantTerm
   signedDieTerm = addedDieTerm <|> subtractedDieTerm
   signedConstantTerm = addedConstantTerm <|> subtractedConstantTerm
 
 parse :: String -> Maybe [DiceExpression]
-parse x = filter (not . isSpace) x =~ diceExpression1
+parse x = filter (not . isSpace) x =~ diceExpression
