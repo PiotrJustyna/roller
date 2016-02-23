@@ -8,7 +8,7 @@ license:             GPL-2
 license-file:        LICENSE
 author:              Piotr Justyna
 maintainer:          piotr.justyna@gmail.com
-copyright:           (c) 2015 Piotr Justyna
+copyright:           (c) 2016 Piotr Justyna
 category:            ACME
 build-type:          Simple
 cabal-version:       >= 1.10
@@ -22,7 +22,7 @@ library
                        Roller.Types,
                        Roller.Parse,
                        Roller.CLI
-  build-depends:       base >= 4.6.0.1 && < 4.9,
+  build-depends:       base >= 4.6.0.1,
                        random >= 1.0.1,
                        regex-applicative >= 0.3,
                        optparse-applicative >= 0.11.0
