@@ -1,5 +1,5 @@
 name:                roller
-version:             0.1.6
+version:             0.1.7
 synopsis:            Playing with applicatives and dice!
 description:         A basic library and program for simulated rolling of
                      polyhedral dice, as would be used in pen and paper RPGs.
